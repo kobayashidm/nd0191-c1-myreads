@@ -1,8 +1,17 @@
 import "./App.css";
 import { useState } from "react";
+import { getAll } from "./BooksAPI";
+
+const getBooks = async () =>{
+  var books = await getAll();
+  return books;
+}
 
 function App() {
   const [showSearchPage, setShowSearchpage] = useState(false);
+
+    var bookFromAPI = getBooks();
+    console.log(bookFromAPI);
 
   return (
     <div className="app">

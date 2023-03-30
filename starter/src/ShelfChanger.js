@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 
 
-const ShelfChanger = () =>(
+const ShelfChanger = (onChangeShelf) =>(
 <div className="book-shelf-changer">
-  <select>
+  <select onClick={onChangeShelf}>
     <option value="none" disabled>
       Move to...
     </option>
