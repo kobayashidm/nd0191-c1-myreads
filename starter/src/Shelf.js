@@ -2,21 +2,28 @@ import React from 'react'
 import Book from './Book'
 
 
-const Shelf = (books, shelf, onChangeShelf) => (
+const Shelf = (books, shelf, onChangeShelf) => {
+    
+    const bookShelf = books.filter((book) => book.shelf === shelf);
+    
+    return (
+
     <div className="bookshelf">
         <h2 className="bookshelf-title">{shelf}</h2>
         <div className="bookshelf-books">
             <ol className="books-grid">
                 {
-                    books.map((book) => {
-                        <Book key = {book.id} book = {book} shelf = {shelf} onChangeShelf = {onChangeShelf} />
-                    })
+                    bookShelf.map((book) =>(
+                        <div  key = {book.id}>
+                        <Book book = {book} onChangeShelf = {onChangeShelf} />
+                        </div> 
+
+                    ))
                 }
-                <Books />
             </ol>
         </div>
     </div>
 
-)
+)}
 
 export default Shelf;

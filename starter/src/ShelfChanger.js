@@ -1,9 +1,15 @@
 import React from 'react'
 
 
-const ShelfChanger = (onChangeShelf) =>(
-<div className="book-shelf-changer">
-  <select onClick={onChangeShelf}>
+const ShelfChanger = ({book, onChangeShelf}) =>{
+
+  const handleShelfChanger = (e)=>{
+    const value = e.target.value;
+    onChangeShelf(book, value);
+  }
+
+  <div className="book-shelf-changer">
+  <select onClick={handleShelfChanger} value = {book.shelf ? book.shelf : "none"}>
     <option value="none" disabled>
       Move to...
     </option>
@@ -15,6 +21,6 @@ const ShelfChanger = (onChangeShelf) =>(
     <option value="none">None</option>
   </select>
 </div>
-)
+}
 
 export default ShelfChanger;
