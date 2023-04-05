@@ -1,20 +1,29 @@
 import "./App.css";
-import { useState } from "react";
-import { getAll } from "./BooksAPI";
+import React, { useState, useEffect } from "react";
+import * as BooksAPI from "./BooksAPI";
 import {Shelf} from "./Shelf.js"
 
 const getBooks = async () =>{
   var books = await getAll();
   return books;
 }
+var bookFromAPI = getBooks();
+console.log(bookFromAPI);
 
 function App() {
   const [showSearchPage, setShowSearchpage] = useState(false);
+  const [books, setBooks] = useState([]);
 
-    var bookFromAPI = getBooks();
-    console.log(bookFromAPI);
+  useEffect(() => {
+    BooksAPI.getAll().then((books)=> setBooks(books));
+  },[]);
 
-    const books = getBooks();
+  const onCHangeShelf = (bookToShelf, newShelf) =>{
+    
+  }
+
+
+
     
 
   return (
