@@ -2,23 +2,26 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import * as BooksAPI from "./BooksAPI";
 import {Shelf} from "./Shelf.js"
+import Book from "./Book";
 
-const getBooks = async () =>{
-  var books = await getAll();
-  return books;
-}
-var bookFromAPI = getBooks();
-console.log(bookFromAPI);
 
 function App() {
   const [showSearchPage, setShowSearchpage] = useState(false);
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    BooksAPI.getAll().then((books)=> setBooks(books));
+    const getBooks = async () => {
+      const res = await BooksAPI.getAll();
+      setBooks(res);
+    }
+    getBooks();
   },[]);
+  
+  const onChangeShelf = async (book, shelf) =>{
 
-  const onCHangeShelf = (bookToShelf, newShelf) =>{
+    const res = await BooksAPI.update(book, shelf)
+
+
     
   }
 
@@ -55,9 +58,9 @@ function App() {
           </div>
           <div className="list-books-content">
             <div>
-              <Shelf books = {books} shelf = "Want to Read" onCHangeShelf = {onCHangeShelf} />
-              <Shelf books = {books} shelf = "Currently Reading" onCHangeShelf = {onCHangeShelf} />
-              <Shelf books = {books} shelf = "Read" onCHangeShelf = {onCHangeShelf} />
+              <Shelf books = {books} shelf = "Want to Read" onCHangeShelf = {onChangeShelf} />
+              <Shelf books = {books} shelf = "Currently Reading" onCHangeShelf = {onChangeShelf} />
+              <Shelf books = {books} shelf = "Read" onCHangeShelf = {onChangeShelf} />
             </div>
           </div>
           <div className="open-search">
