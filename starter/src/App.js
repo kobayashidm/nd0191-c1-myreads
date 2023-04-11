@@ -1,9 +1,15 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import * as BooksAPI from "./BooksAPI";
-import {Shelf} from "./Shelf.js"
-import Book from "./Book";
+import Shelf from "./Shelf.js"
 
+const testBooks = async () =>{
+  const response =  await BooksAPI.getAll();
+  console.log(response)
+
+}
+
+testBooks();
 
 function App() {
   const [showSearchPage, setShowSearchpage] = useState(false);
@@ -12,24 +18,28 @@ function App() {
   useEffect(() => {
     const getBooks = async () => {
       const res = await BooksAPI.getAll();
+      console.log(res);
       setBooks(res);
-    }
+    };
     getBooks();
   },[]);
   
+  console.log(books);
+
   const onChangeShelf = async (book, shelf) =>{
 
-    const res = await BooksAPI.update(book, shelf)
+    await BooksAPI.update(book, shelf);
 
-
-    
+    if(shelf === "none"){
+      setBooks(books.filter((b) => b.id !== book.id));
+    }
+    else{
+      book.shelf = shelf;
+      setBooks(books.filter((b) => b.id !== book.id).concat(book));
+    }
   }
 
-
-
-    
-
-  return (
+   return (
     <div className="app">
       {showSearchPage ? (
         <div className="search-books">
@@ -58,9 +68,9 @@ function App() {
           </div>
           <div className="list-books-content">
             <div>
-              <Shelf books = {books} shelf = "Want to Read" onCHangeShelf = {onChangeShelf} />
-              <Shelf books = {books} shelf = "Currently Reading" onCHangeShelf = {onChangeShelf} />
-              <Shelf books = {books} shelf = "Read" onCHangeShelf = {onChangeShelf} />
+              <Shelf books = {books} shelfName = "Want to Read" shelf = "wantToRead" onCHangeShelf = {onChangeShelf} />
+              <Shelf books = {books} shelfName = "Currently Reading" shelf = "currentlyReading" onCHangeShelf = {onChangeShelf} />
+              <Shelf books = {books} shelfName = "Read" shelf = "read" onCHangeShelf = {onChangeShelf} />
             </div>
           </div>
           <div className="open-search">
