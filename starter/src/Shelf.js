@@ -2,7 +2,7 @@ import React from 'react'
 import Book from './Book'
 
 
-const Shelf = (books, shelf, shelfName, onChangeShelf) => {
+const Shelf = ({books, shelf, shelfName, onChangeShelf}) => {
     
     const bookShelf = books.filter((book) => book.shelf === shelf);
     

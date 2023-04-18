@@ -14,7 +14,6 @@ function App() {
   useEffect(() => {
     const getBooks = async () => {
       const res = await BooksAPI.getAll();
-      console.log(res);
       setBooks(res);
     };
     getBooks();
@@ -25,29 +24,30 @@ function App() {
     await BooksAPI.update(book, shelf);
 
     if(shelf === "none"){
-      setBooks(books.filter((b) => b.id !== book.id));
+      setBooks(books?.filter((b) => b.id !== book.id));
     }
     else{
       book.shelf = shelf;
-      setBooks(books.filter((b) => b.id !== book.id).concat(book));
+      setBooks(books?.filter((b) => b.id !== book.id).concat(book));
     }
   }
 
    return (
+    <div className="app">
     <Routes>
       <Route exact path = "/"
-      element = {
+      element = { 
+      <div>
+            <Shelf books = {books} shelfName = "Want to Read" shelf = "wantToRead" onChangeShelf = {onChangeShelf} />
+            <Shelf books = {books} shelfName = "Currently Reading" shelf = "currentlyReading" onChangeShelf = {onChangeShelf} />
+            <Shelf books = {books} shelfName = "Read" shelf = "read" onChangeShelf = {onChangeShelf} />
 
-        <div className="app">
- 
-            <Shelf books = {books} shelfName = "Want to Read" shelf = "wantToRead" onCHangeShelf = {onChangeShelf} />
-            <Shelf books = {books} shelfName = "Currently Reading" shelf = "currentlyReading" onCHangeShelf = {onChangeShelf} />
-            <Shelf books = {books} shelfName = "Read" shelf = "read" onCHangeShelf = {onChangeShelf} />
-
-        </div>
+      </div> 
+            
 
       }/>
     </Routes>
+    </div>
 
   );
 }
