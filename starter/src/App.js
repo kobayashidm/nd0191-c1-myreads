@@ -33,13 +33,13 @@ function App() {
   }
 
    return (
-    <div className="app">
+
     <Routes>
       <Route exact path = "/"
       element = { 
-      <div>
-            <Shelf books = {books} shelfName = "Want to Read" shelf = "wantToRead" onChangeShelf = {onChangeShelf} />
+      <div className="app">
             <Shelf books = {books} shelfName = "Currently Reading" shelf = "currentlyReading" onChangeShelf = {onChangeShelf} />
+            <Shelf books = {books} shelfName = "Want to Read" shelf = "wantToRead" onChangeShelf = {onChangeShelf} />
             <Shelf books = {books} shelfName = "Read" shelf = "read" onChangeShelf = {onChangeShelf} />
 
       </div> 
@@ -47,7 +47,7 @@ function App() {
 
       }/>
     </Routes>
-    </div>
+
 
   );
 }
