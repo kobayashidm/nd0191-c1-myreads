@@ -1,5 +1,4 @@
 import { useState } from "react";
-import * as BooksAPI from "./BooksAPI";
 import Book from "./Book";
 import { Link } from "react-router-dom";
 
@@ -7,6 +6,7 @@ const SearchPage = ({ books, onChangeShelf }) => {
   const [query, setQuery] = useState("");
 
   const searchHandle = (query) => {
+    console.log(query); 
     setQuery(query.trim());
   };
 
@@ -38,8 +38,8 @@ const SearchPage = ({ books, onChangeShelf }) => {
       <div className="search-books-results">
         <div>
           <ol className="books-grid">
-            {showingBooks.map((book) => (
-              <Book book={book} key={book.id} onChangeShelf={onChangeShelf} />
+            {showingBooks.map((books) => (
+              <Book book={books} key={books.id} onChangeShelf={onChangeShelf} />
             ))}
           </ol>
         </div>

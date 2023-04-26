@@ -1,13 +1,11 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import * as BooksAPI from "./BooksAPI";
-import Shelf from "./Shelf.js"
-import { Route, Routes, useNavigate } from "react-router-dom";
-
+import Shelf from "./Shelf.js";
+import { Route, Routes, Link } from "react-router-dom";
+import SearchPage from "./SearchPage";
 
 function App() {
-
-  let navigate = useNavigate();
 
   const [books, setBooks] = useState([]);
 
@@ -18,38 +16,66 @@ function App() {
       console.log(res);
     };
     getBooks();
-  },[]);
-  
-  const onChangeShelf = async (book, shelf) =>{
+  }, []);
 
+  const onChangeShelf = async (book, shelf) => {
     await BooksAPI.update(book, shelf);
 
-    if(shelf === "none"){
+    if (shelf === "none") {
       setBooks(books?.filter((b) => b.id !== book.id));
-    }
-    else{
+    } else {
       book.shelf = shelf;
       setBooks(books?.filter((b) => b.id !== book.id).concat(book));
     }
-  }
+  };
 
-   return (
-
-    <Routes>
-      <Route exact path = "/"
-      element = { 
-      <div className="app">
-            <Shelf books = {books} shelfName = "Currently Reading" shelf = "currentlyReading" onChangeShelf = {onChangeShelf} />
-            <Shelf books = {books} shelfName = "Want to Read" shelf = "wantToRead" onChangeShelf = {onChangeShelf} />
-            <Shelf books = {books} shelfName = "Read" shelf = "read" onChangeShelf = {onChangeShelf} />
-
-      </div> 
-            
-
-      }/>
-    </Routes>
-
-
+  return (
+    <div className="app">
+      <div className="list-books-title">
+        <h1>MyReads</h1>
+      </div>
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <div>
+              <Shelf
+                books={books}
+                shelfName="Currently Reading"
+                shelf="currentlyReading"
+                onChangeShelf={onChangeShelf}
+              />
+              <Shelf
+                books={books}
+                shelfName="Want to Read"
+                shelf="wantToRead"
+                onChangeShelf={onChangeShelf}
+              />
+              <Shelf
+                books={books}
+                shelfName="Read"
+                shelf="read"
+                onChangeShelf={onChangeShelf}
+              />
+              
+            </div>
+          }
+        />
+        <Route
+          exact
+          path="/search"
+          element={
+            <div>
+              <SearchPage books={books} onChangeShelf={onChangeShelf} />
+            </div>
+          }
+        />
+      </Routes>
+      <div className="open-search">
+              <Link className = "open-search" to = "/search">Add a Book</Link>
+      </div>
+    </div>
   );
 }
 
