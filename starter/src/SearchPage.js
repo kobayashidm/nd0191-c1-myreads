@@ -10,14 +10,15 @@ const SearchPage = ({ books, onChangeShelf }) => {
     setQuery(query.trim());
   };
 
-  const showingBooks =
+  const showingBooks = 
     query === ""
       ? books
       : books.filter(
-          (b) =>
-            b.title.toLowerCase().includes(query.toLowerCase()) ||
-            b.author.toLowerCase().includes(query.toLowerCase()) ||
-            b.industryIndetifiers.identifier.includes(query)
+          (b) => {
+            return b.title.toLowerCase().includes(query.toLowerCase()) 
+            //|| b.author.toLowerCase().includes(query.toLowerCase()) || b.industryIndetifiers.identifier.includes(query)
+          }
+
         );
 
   return (
