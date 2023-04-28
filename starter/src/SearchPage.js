@@ -1,19 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Book from "./Book";
 import { Link } from "react-router-dom";
+import * as BooksAPI from "./BooksAPI";
 
 const SearchPage = ({ books, onChangeShelf }) => {
   const [query, setQuery] = useState("");
+  const [searchedBooks, setSearchedBooks] = useState([]);
+
 
   const searchHandle = (query) => {
     console.log(query); 
     setQuery(query.trim());
   };
+  
+  useEffect(()=>{
+    const searchBooks = async (query) =>{
+      const res = await BooksAPI.search(query);
+      console.log(res);
+      setSearchedBooks(res);  
+    }
+    searchBooks(); 
+  })
 
   const showingBooks = 
     query === ""
-      ? books
-      : books.filter(
+      ? searchedBooks
+      : searchedBooks.filter(
           (b) => {
             return b.title.toLowerCase().includes(query.toLowerCase()) 
             //|| b.author.toLowerCase().includes(query.toLowerCase()) || b.industryIndetifiers.identifier.includes(query)

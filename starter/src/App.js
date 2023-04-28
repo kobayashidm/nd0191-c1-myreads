@@ -19,13 +19,13 @@ function App() {
   }, []);
 
   const onChangeShelf = async (book, shelf) => {
-    await BooksAPI.update(book, shelf);
 
     if (shelf === "none") {
       setBooks(books?.filter((b) => b.id !== book.id));
     } else {
       book.shelf = shelf;
       setBooks(books?.filter((b) => b.id !== book.id).concat(book));
+      await BooksAPI.update(book, shelf);
     }
   };
 
