@@ -67,7 +67,7 @@ function App() {
           path="/search"
           element={
             <div>
-              <SearchPage books={books} onChangeShelf={onChangeShelf} />
+              <SearchPage books={books} key={books.id} onChangeShelf={onChangeShelf} />
             </div>
           }
         />

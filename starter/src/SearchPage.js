@@ -9,29 +9,35 @@ const SearchPage = ({ books, onChangeShelf }) => {
 
 
   const searchHandle = (query) => {
-    console.log(query); 
+    console.log(query);
     setQuery(query.trim());
   };
-  
+
+
   useEffect(()=>{
-    const searchBooks = async (query) =>{
-      const res = await BooksAPI.search(query);
-      console.log(res);
-      setSearchedBooks(res);  
-    }
-    searchBooks(); 
-  })
+    const searchBooks = async () => {
+      if(query ===""){
+        setSearchedBooks([]);
+      }
+      else{
+        const res = await BooksAPI.search(query);
+        try{
+          setSearchedBooks(res);
+        }
+        catch{
+          console.log("Error");
+          setSearchedBooks([books]);
+        }
+      }
 
-  const showingBooks = 
-    query === ""
-      ? searchedBooks
-      : searchedBooks.filter(
-          (b) => {
-            return b.title.toLowerCase().includes(query.toLowerCase()) 
-            //|| b.author.toLowerCase().includes(query.toLowerCase()) || b.industryIndetifiers.identifier.includes(query)
-          }
+    };      
+    searchBooks();
+    return () =>{
+        setSearchedBooks([]);
+      }
+  },[books, query]);
+  
 
-        );
 
   return (
     <div className="search-books">
@@ -51,8 +57,8 @@ const SearchPage = ({ books, onChangeShelf }) => {
       <div className="search-books-results">
         <div>
           <ol className="books-grid">
-            {showingBooks.map((books) => (
-              <Book book={books} key={books.id} onChangeShelf={onChangeShelf} />
+            {searchedBooks.map((b) => (
+              <Book book={b} key={b.id} onChangeShelf={onChangeShelf} />
             ))}
           </ol>
         </div>
