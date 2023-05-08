@@ -21,15 +21,13 @@ const SearchPage = ({ books, onChangeShelf }) => {
       }
       else{
         const res = await BooksAPI.search(query);
-        try{
+        if(res.error){
+          setSearchedBooks([]);
+        }
+        else{
           setSearchedBooks(res);
         }
-        catch{
-          console.log("Error");
-          setSearchedBooks([books]);
-        }
       }
-
     };      
     searchBooks();
     return () =>{
@@ -37,6 +35,14 @@ const SearchPage = ({ books, onChangeShelf }) => {
       }
   },[books, query]);
   
+  const mergedBooks = async ()=>{
+    let booksOnshelf = books;
+    let booksOutShelf = searchedBooks;
+    booksOutShelf =  booksOnshelf.map(b=>{return b});
+    console.log(booksOnshelf);
+    console.log(booksOutShelf);    
+    }
+  mergedBooks();
 
 
   return (
@@ -57,7 +63,7 @@ const SearchPage = ({ books, onChangeShelf }) => {
       <div className="search-books-results">
         <div>
           <ol className="books-grid">
-            {searchedBooks.map((b) => (
+            {searchedBooks?.map((b) => (
               <Book book={b} key={b.id} onChangeShelf={onChangeShelf} />
             ))}
           </ol>
