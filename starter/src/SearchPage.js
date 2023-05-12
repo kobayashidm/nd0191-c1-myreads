@@ -6,44 +6,42 @@ import * as BooksAPI from "./BooksAPI";
 const SearchPage = ({ books, onChangeShelf }) => {
   const [query, setQuery] = useState("");
   const [searchedBooks, setSearchedBooks] = useState([]);
-
-
+  
   const searchHandle = (query) => {
     console.log(query);
     setQuery(query.trim());
   };
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const searchBooks = async () => {
-      if(query ===""){
+      if (query === "") {
         setSearchedBooks([]);
-      }
-      else{
+      } else {
         const res = await BooksAPI.search(query);
-        if(res.error){
+        if (res.error) {
           setSearchedBooks([]);
-        }
-        else{
+        } else {
           setSearchedBooks(res);
+
         }
       }
-    };      
+    };
     searchBooks();
-    return () =>{
-        setSearchedBooks([]);
-      }
-  },[books, query]);
-  
-  const mergedBooks = async ()=>{
-    let booksOnshelf = books;
-    let booksOutShelf = searchedBooks;
-    booksOutShelf =  booksOnshelf.map(b=>{return b});
-    console.log(booksOnshelf);
-    console.log(booksOutShelf);    
-    }
-  mergedBooks();
+    return () => {
+      setSearchedBooks([]);
+    };
+  }, [books, query]);
 
+  searchedBooks.map(book =>{
+    const booksOnShelf = books.find(b => b.id === book.id)
+    if(booksOnShelf) {
+      book.shelf = books.shelf;
+    }
+    else{
+      book.shelf = "none"
+    }
+    return book;
+  })
 
   return (
     <div className="search-books">
@@ -63,7 +61,7 @@ const SearchPage = ({ books, onChangeShelf }) => {
       <div className="search-books-results">
         <div>
           <ol className="books-grid">
-            {searchedBooks?.map((b) => (
+            {mergedBooks?.map((b) => (
               <Book book={b} key={b.id} onChangeShelf={onChangeShelf} />
             ))}
           </ol>
