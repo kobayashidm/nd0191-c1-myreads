@@ -6,7 +6,6 @@ import { Route, Routes, Link } from "react-router-dom";
 import SearchPage from "./SearchPage";
 
 function App() {
-
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
@@ -16,10 +15,12 @@ function App() {
       setBooks(res);
     };
     getBooks();
+    return () => {
+      setBooks([]);
+    };
   }, []);
 
   const onChangeShelf = async (book, shelf) => {
-
     if (shelf === "none") {
       setBooks(books?.filter((b) => b.id !== book.id));
     } else {
@@ -58,7 +59,6 @@ function App() {
                 shelf="read"
                 onChangeShelf={onChangeShelf}
               />
-              
             </div>
           }
         />
@@ -67,13 +67,19 @@ function App() {
           path="/search"
           element={
             <div>
-              <SearchPage books={books} key={books.id} onChangeShelf={onChangeShelf} />
+              <SearchPage
+                books={books}
+                key={books.id}
+                onChangeShelf={onChangeShelf}
+              />
             </div>
           }
         />
       </Routes>
       <div className="open-search">
-              <Link className = "open-search" to = "/search">Add a Book</Link>
+        <Link className="open-search" to="/search">
+          Add a Book
+        </Link>
       </div>
     </div>
   );

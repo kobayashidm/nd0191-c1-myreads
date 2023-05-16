@@ -6,7 +6,7 @@ import * as BooksAPI from "./BooksAPI";
 const SearchPage = ({ books, onChangeShelf }) => {
   const [query, setQuery] = useState("");
   const [searchedBooks, setSearchedBooks] = useState([]);
-  
+
   const searchHandle = (query) => {
     console.log(query);
     setQuery(query.trim());
@@ -31,14 +31,16 @@ const SearchPage = ({ books, onChangeShelf }) => {
       setSearchedBooks([]);
     };
   }, [books, query]);
-
-  searchedBooks.map(book =>{
+ 
+  const mergedBooks = searchedBooks.map(book =>{
     const booksOnShelf = books.find(b => b.id === book.id)
     if(booksOnShelf) {
-      book.shelf = books.shelf;
+      book.shelf = booksOnShelf.shelf;
     }
     else{
+      
       book.shelf = "none"
+      console.log(book.shelf)
     }
     return book;
   })
@@ -61,7 +63,7 @@ const SearchPage = ({ books, onChangeShelf }) => {
       <div className="search-books-results">
         <div>
           <ol className="books-grid">
-            {mergedBooks?.map((b) => (
+            {mergedBooks.map((b) => (
               <Book book={b} key={b.id} onChangeShelf={onChangeShelf} />
             ))}
           </ol>
